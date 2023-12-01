@@ -1,5 +1,6 @@
 
 
+import Swal from 'sweetalert2';
 import useAxiosPublic from '../../../Hooks/useAxiosPublic';
 import TitleSection from './../../../components/TitleSection';
 import { useForm } from "react-hook-form"
@@ -14,10 +15,35 @@ const Contact = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    console.log(data)
-
-  }
-
+    console.log(data);
+    const email = data.email;
+    console.log(email);
+  
+    const contactItem = {
+      name: data.name,
+      email: data.email,
+      massage: data.massage,
+      phone: data.number,
+      subject: data.subject,
+    };
+    console.log('contact',contactItem);
+    axiosPublic.post('/contacts', contactItem)
+      .then(res => {
+        if (res.data.insertedId) {
+          console.log('user added to the database');
+          reset();
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title:  `Contact ${data.name} created successfully.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+  };
+  
+ 
   return (
     <div>
       <TitleSection title='contact us '></TitleSection>
