@@ -7,13 +7,14 @@ import { AuthContext } from '../provider/AuthProvider';
 import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
-  const {singIn,googleSignIn }=useContext(AuthContext);
+  const {signIn,googleSignIn }=useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const[loginError,setLoginError]=useState('');
     const [disabled ,setDisabled]=useState(true);
      const from = location.state?.from?.pathname || "/";
      console.log('state in the location', location.state);
- 
+  
     useEffect(()=>{
         loadCaptchaEnginge(6); 
     },[])
@@ -23,7 +24,8 @@ const Login = () => {
         const email= form.email.value;
         const password= form.password.value;
         console.log(email,password);
-        singIn(email,password)
+        setLoginError('');
+        signIn(email,password)
         .then(res=>{
           const user=res.user;
           console.log(user);
@@ -45,6 +47,16 @@ const Login = () => {
             }
           });
           navigate(from, { replace: true });
+        })
+        .catch(error=>{
+          console.error(error);
+          setLoginError(error.message);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: `${error}!`,
+            footer: '<a href="#">Why do I have this issue?</a>'
+          });
         })
     }
     const handleCaptchaValidate = (e) =>{
