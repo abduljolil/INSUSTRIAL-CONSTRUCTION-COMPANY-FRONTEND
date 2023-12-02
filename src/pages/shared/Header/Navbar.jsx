@@ -17,7 +17,7 @@ const Navbar = () => {
         <li><Link to='about'>about</Link></li>
         <li><Link to='contact'>contact</Link></li>
         <li><Link to=' '>testimonial</Link></li>
-        <li><Link to='dashboard/employee '>Dashboard</Link></li>
+        <li><Link to='dashboard/users'>Dashboard</Link></li>
 
         {
             user ? <>

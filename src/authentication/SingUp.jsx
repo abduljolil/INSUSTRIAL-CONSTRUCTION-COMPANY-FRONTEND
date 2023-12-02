@@ -24,6 +24,8 @@ const SingUp = () => {
 
   const onSubmit = async (data) => {
     console.log(data)
+    const salary = data.salary;
+    console.log(salary);
     const imageFile = { image: data.image[0] }
     const res = await axiosPublic.post(image_hosting_api, imageFile, {
       headers: {
@@ -33,33 +35,24 @@ const SingUp = () => {
     if (res.data.success) {
       const user = {
         name: data.name,
-        email:data. email,
-        category:data.category,
-        accountNumber:data.number,
-        image: res.data.data.display_url
-      }
+        email: data.email,
+        category: data.category,
+        accountNumber: data.number,
+        salary: data.salary,
+        designation: data.designation,
+        image: res.data.data.display_url,
+      };
       const userRes = await axiosPublic.post('/users', user);
       console.log(userRes.data)
-      if (userRes.data.insertedId) {
-        reset();
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: `${data.name} is added to the menu.`,
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
     }
     console.log(res.data);
-    const name =data.name;
-    console.log(name);
     createUser(data.email, data.password)
 
       .then(res => {
         const loggedUser = res.user;
         console.log(loggedUser);
-        updateUserProfile(data.name, data.photo)
+        const imageUrl = data.image.display_url; // Replace with the correct property
+        updateUserProfile(data.name, imageUrl)
           .then(() => {
             console.log('user profile update');
             reset();
@@ -77,7 +70,7 @@ const SingUp = () => {
           })
       })
   };
-
+  // Manager, Director, Engineer, CEO
   return (
     <>
       <div className="hero min-h-screen bg-base-300">
@@ -103,12 +96,40 @@ const SingUp = () => {
                 <input
                   type="text"
                   {...register("number", { required: true })}
-                  name="number"   
+                  name="number"
                   placeholder="number"
                   className="input input-bordered"
                   required
                 />
                 {errors.number && <span className="text-red-500">bank_account_no is required</span>}
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text"> Salary</span>
+                </label>
+                <input
+                  type="text"
+                  {...register("salary", { required: true })}
+                  name="salary"
+                  placeholder="Salary"
+                  className="input input-bordered"
+                  required
+                />
+                {errors.salary && <span className="text-red-500"> Salary is required</span>}
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text"> Designation</span>
+                </label>
+                <input
+                  type="text"
+                  {...register("designation", { required: true })}
+                  name="designation"
+                  placeholder="Designation"
+                  className="input input-bordered"
+                  required
+                />
+                {errors.designation && <span className="text-red-500"> Designation is required</span>}
               </div>
 
               <div className="form-control">

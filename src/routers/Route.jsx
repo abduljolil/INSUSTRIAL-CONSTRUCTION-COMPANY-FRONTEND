@@ -11,7 +11,9 @@ import AboutUs from "../pages/Home/Home/AboutUs";
 import ErrorPage from "../pages/ErrorPage";
 import Dashboard from "../layout/Dashboard";
 import PrivateRoute from "./PrivatRoute";
+import AllUsers from "../pages/Dashboard/Pages/AllUsers";
 import AllEmployee from "../pages/Dashboard/Pages/AllEmployee";
+import Details from "../pages/Dashboard/Pages/Details";
 
   const router = createBrowserRouter([
     {
@@ -50,8 +52,18 @@ import AllEmployee from "../pages/Dashboard/Pages/AllEmployee";
       element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
       children: [
         {
+          path: 'users',
+          element:<AllUsers></AllUsers>
+        },
+        {
           path: 'employee',
-          element: <AllEmployee></AllEmployee>
+          element: <AllEmployee></AllEmployee>,
+          children: [
+            {
+              path: 'details',  
+              element: <Details></Details>
+            }
+          ]
         },
       ]
     },

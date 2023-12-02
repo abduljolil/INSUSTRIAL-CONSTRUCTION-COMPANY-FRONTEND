@@ -1,56 +1,19 @@
-import { FaTrashAlt } from "react-icons/fa";
- 
-import Swal from "sweetalert2";
- 
-import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import useEmployee from "../../../Hooks/useEmployee";
+import { Link } from "react-router-dom";
+import { AiOutlineClose,AiOutlineCheck } from "react-icons/ai";
 
-
-const  AllEmployee = () => {
-    const [users, refetch] =  useEmployee();
-  
+const AllEmployee = () => {
     const axiosSecure = useAxiosSecure();
-
-    const handleDelete = id => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                axiosSecure.delete(`/users/${id}`)
-                    .then(res => {
-                        if (res.data.deletedCount > 0) {
-                            refetch();
-                            Swal.fire({
-                                title: "Deleted!",
-                                text: "Your file has been deleted.",
-                                icon: "success"
-                            });
-                        }
-                    })
-            }
-        });
-    }
-
+    const { data: users = [], refetch } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            const res = await axiosSecure.get('/users');
+            return res.data;
+        }
+    })
     return (
         <div>
-            {/* <div className="flex justify-evenly mb-8">
-                <h2 className="text-4xl">Items: {cart.length}</h2>
-                <h2 className="text-4xl">Total Price: {totalPrice}</h2>
-                {cart.length ? <Link to="/dashboard/payment">
-                    <button className="btn btn-primary">Pay</button>
-                </Link>:
-                <button disabled className="btn btn-primary">Pay</button>
-                }
-
-            </div> */}
             <div className="overflow-x-auto">
                 <table className="table  w-full">
                     {/* head */}
@@ -59,10 +22,13 @@ const  AllEmployee = () => {
                             <th>
                                 #
                             </th>
-                            <th>Image</th>
                             <th>Name</th>
-                            <th>Price</th>
-                            <th>Action</th>
+                            <th>Email</th>
+                            <th>Verified</th>
+                            <th>Bank Account</th>
+                            <th>Salary</th>
+                            <th>Pay</th>
+                            <th> Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,25 +38,33 @@ const  AllEmployee = () => {
                                     {index + 1}
                                 </th>
                                 <td>
-                                    <div className="flex items-center gap-3">
-                                        <div className="avatar">
-                                            <div className="mask mask-squircle w-12 h-12">
-                                                <img src={item.image} alt="Avatar Tailwind CSS Component" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
                                     {item.name}
                                 </td>
-                                <td>${item.price}</td>
+                                <td>
+                                    {item.email}
+                                </td>
+                                <td>
+                                    <div>
+                                    <label className="swap text-3xl p-1 font-bold rounded-full border-[4px] ">
+                                        <input type="checkbox" />
+                                        <div className="swap-off"><AiOutlineClose /></div>
+                                        <div className="swap-on"><AiOutlineCheck /></div>
+                                    </label>
+                                    </div>
+                                </td>
+                                {item.accountNumber}
                                 <th>
-                                    <button
-                                        onClick={() => handleDelete(item._id)}
-                                        className="btn btn-ghost btn-lg">
-                                        <FaTrashAlt className="text-red-600"></FaTrashAlt>
-                                    </button>
+                                    ${item.salary}
                                 </th>
+                                <th>
+                                    <div>
+                                    <button className="btn btn-outline btn-warning">Pay</button>
+                                    </div>
+                                </th>
+                                <th>
+                                    <Link to='/dashboard/employee/details'>Details</Link>
+                                </th>
+
                             </tr>)
                         }
 
