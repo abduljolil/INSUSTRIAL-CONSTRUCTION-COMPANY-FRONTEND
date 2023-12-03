@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
 import { AiOutlineClose,AiOutlineCheck } from "react-icons/ai";
+import Swal from "sweetalert2";
 
 const AllEmployee = () => {
     const axiosSecure = useAxiosSecure();
@@ -12,6 +13,27 @@ const AllEmployee = () => {
             return res.data;
         }
     })
+ 
+    const handleVerified = (item) => {
+        axiosSecure.patch(`/users/${item._id}`, { status: 'verified' })
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.modifiedCount > 0) {
+              refetch();
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: `${item.name} is now verified!`,
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          })
+          .catch((error) => {
+            console.error('Error updating user status:', error);
+          });
+      };
+      
     return (
         <div>
             <div className="overflow-x-auto">
@@ -45,13 +67,18 @@ const AllEmployee = () => {
                                 </td>
                                 <td>
                                     <div>
-                                    <label className="swap text-3xl p-1 font-bold rounded-full border-[4px] ">
+                                    {/* <label className="swap text-3xl p-1 font-bold rounded-full border-[4px] ">
                                         <input type="checkbox" />
-                                        <div className="swap-off"><AiOutlineClose /></div>
-                                        <div className="swap-on"><AiOutlineCheck /></div>
-                                    </label>
+                                      {  item.status === 'verified' ? <div className="swap-on"><AiOutlineCheck /></div>:
+                                       <div onClick={()=>handleVerified(item)} className="swap-off"><AiOutlineClose /></div>
+                                        }
+                                    </label> */}
+                                    {
+                                        item.status === 'verified' ? <button className="text-3xl  btn btn-outline btn-warning  "><AiOutlineCheck /></button>:<button onClick={()=>handleVerified(item)} className="text-3xl btn btn-outline btn-warning  " ><AiOutlineClose /></button>
+                                    }
                                     </div>
                                 </td>
+                                
                                 {item.accountNumber}
                                 <th>
                                     ${item.salary}
