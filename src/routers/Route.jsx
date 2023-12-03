@@ -56,14 +56,13 @@ import Details from "../pages/Dashboard/Pages/Details";
           element:<AllUsers></AllUsers>
         },
         {
+          path: 'details',  
+          element: <Details></Details>
+        },
+        {
           path: 'employee',
           element: <AllEmployee></AllEmployee>,
-          children: [
-            {
-              path: 'details',  
-              element: <Details></Details>
-            }
-          ]
+          
         },
       ]
     },

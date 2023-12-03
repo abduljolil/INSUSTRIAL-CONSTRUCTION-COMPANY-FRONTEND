@@ -9,7 +9,7 @@ const Gallery = () => {
     const [gallery, setGallery] = useState([]);
 
     useEffect(() => {
-      fetch('http://localhost:5000/gallery')
+      fetch('https://assingment-12-backend.vercel.app/gallery')
         .then(res => res.json())
         .then(data => setGallery(data)) // Use setService to update the state
         .catch(error => console.error('Error fetching data:', error));

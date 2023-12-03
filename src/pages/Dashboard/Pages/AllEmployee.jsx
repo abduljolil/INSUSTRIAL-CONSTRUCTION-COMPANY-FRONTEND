@@ -33,7 +33,20 @@ const AllEmployee = () => {
             console.error('Error updating user status:', error);
           });
       };
-      
+      const handlePay = (item) => {
+        if (item.status === 'verified') {
+            // Implement logic to handle payment
+            // You can open a modal, dispatch an action, or navigate to a payment page
+            // based on your application structure and requirements.
+            console.log(`Paying ${item.name} $${item.salary}`);
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Cannot pay unverified employees!',
+            });
+        }
+    };
     return (
         <div>
             <div className="overflow-x-auto">
@@ -85,11 +98,16 @@ const AllEmployee = () => {
                                 </th>
                                 <th>
                                     <div>
-                                    <button className="btn btn-outline btn-warning">Pay</button>
+                                    <button
+                                            onClick={() => handlePay(item)}
+                                            className="btn btn-outline btn-warning"
+                                        >
+                                            Pay
+                                        </button>
                                     </div>
                                 </th>
                                 <th>
-                                    <Link to='/dashboard/employee/details'>Details</Link>
+                                    <Link to='/dashboard/details'>Details</Link>
                                 </th>
 
                             </tr>)

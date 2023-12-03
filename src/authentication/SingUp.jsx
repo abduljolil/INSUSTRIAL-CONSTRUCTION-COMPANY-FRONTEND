@@ -24,8 +24,7 @@ const SingUp = () => {
 
   const onSubmit = async (data) => {
     console.log(data)
-    const salary = data.salary;
-    console.log(salary);
+    
     const imageFile = { image: data.image[0] }
     const res = await axiosPublic.post(image_hosting_api, imageFile, {
       headers: {
@@ -51,7 +50,7 @@ const SingUp = () => {
       .then(res => {
         const loggedUser = res.user;
         console.log(loggedUser);
-        const imageUrl = data.image.display_url; // Replace with the correct property
+        const imageUrl = data.image.display_url;  
         updateUserProfile(data.name, imageUrl)
           .then(() => {
             console.log('user profile update');
