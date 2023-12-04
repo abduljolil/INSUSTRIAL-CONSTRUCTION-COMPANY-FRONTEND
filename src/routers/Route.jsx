@@ -14,6 +14,7 @@ import PrivateRoute from "./PrivatRoute";
 import AllUsers from "../pages/Dashboard/Pages/AllUsers";
 import AllEmployee from "../pages/Dashboard/Pages/AllEmployee";
 import Details from "../pages/Dashboard/Pages/Details";
+import AdminRoute from "./AdminRoute";
 
   const router = createBrowserRouter([
     {
@@ -53,11 +54,12 @@ import Details from "../pages/Dashboard/Pages/Details";
       children: [
         {
           path: 'users',
-          element:<AllUsers></AllUsers>
+          element: <AllUsers></AllUsers>
         },
         {
-          path: 'details',  
-          element: <Details></Details>
+          path: 'details/:id',  
+          element: <Details></Details>,
+          loader:({params})=>fetch(`https://assingment-12-backend.vercel.app/users/${params.id}`)
         },
         {
           path: 'employee',

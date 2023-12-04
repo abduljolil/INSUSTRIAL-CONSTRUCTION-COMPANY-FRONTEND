@@ -31,11 +31,12 @@ const SingUp = () => {
         'content-type': 'multipart/form-data'
       }
     });
+    const imageUrl = res.data.data.display_url; 
     if (res.data.success) {
       const user = {
         name: data.name,
         email: data.email,
-        category: data.category,
+        role: data.category,
         accountNumber: data.number,
         salary: data.salary,
         designation: data.designation,
@@ -50,7 +51,8 @@ const SingUp = () => {
       .then(res => {
         const loggedUser = res.user;
         console.log(loggedUser);
-        const imageUrl = data.image.display_url;  
+   
+        console.log(imageUrl); 
         updateUserProfile(data.name, imageUrl)
           .then(() => {
             console.log('user profile update');
@@ -160,13 +162,13 @@ const SingUp = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Category*</span>
+                    <span className="label-text"> role*</span>
                   </label>
                   <select defaultValue="Employee" {...register('category', { required: true })}
                     className="select select-bordered w-full">
                     <option value="Employee">Employee</option>
                     <option value="HR">HR</option>
-                    <option value="Admin">Admin</option>
+                    <option value="admin">Admin</option>
 
                   </select>
                   {errors.category && <span className="text-red-500">  Image  is required</span>}

@@ -3,13 +3,14 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
 import { AiOutlineClose,AiOutlineCheck } from "react-icons/ai";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const AllEmployee = () => {
     const axiosSecure = useAxiosSecure();
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/users');
+            const res = await axios.get('http://localhost:5000/users');
             return res.data;
         }
     })
@@ -33,20 +34,7 @@ const AllEmployee = () => {
             console.error('Error updating user status:', error);
           });
       };
-      const handlePay = (item) => {
-        if (item.status === 'verified') {
-            // Implement logic to handle payment
-            // You can open a modal, dispatch an action, or navigate to a payment page
-            // based on your application structure and requirements.
-            console.log(`Paying ${item.name} $${item.salary}`);
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Cannot pay unverified employees!',
-            });
-        }
-    };
+      
     return (
         <div>
             <div className="overflow-x-auto">
@@ -80,12 +68,6 @@ const AllEmployee = () => {
                                 </td>
                                 <td>
                                     <div>
-                                    {/* <label className="swap text-3xl p-1 font-bold rounded-full border-[4px] ">
-                                        <input type="checkbox" />
-                                      {  item.status === 'verified' ? <div className="swap-on"><AiOutlineCheck /></div>:
-                                       <div onClick={()=>handleVerified(item)} className="swap-off"><AiOutlineClose /></div>
-                                        }
-                                    </label> */}
                                     {
                                         item.status === 'verified' ? <button className="text-3xl  btn btn-outline btn-warning  "><AiOutlineCheck /></button>:<button onClick={()=>handleVerified(item)} className="text-3xl btn btn-outline btn-warning  " ><AiOutlineClose /></button>
                                     }
@@ -98,16 +80,11 @@ const AllEmployee = () => {
                                 </th>
                                 <th>
                                     <div>
-                                    <button
-                                            onClick={() => handlePay(item)}
-                                            className="btn btn-outline btn-warning"
-                                        >
-                                            Pay
-                                        </button>
+                                    <button className="btn btn-outline btn-warning">Pay</button>
                                     </div>
                                 </th>
                                 <th>
-                                    <Link to='/dashboard/details'>Details</Link>
+                                    <Link to={`/dashboard/details/${item._id}`}>Details</Link>
                                 </th>
 
                             </tr>)

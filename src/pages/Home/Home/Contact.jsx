@@ -94,7 +94,7 @@ const Contact = () => {
           <input type="text" name="massage" {...register("massage", { required: true })} placeholder="Massage" className="py-24 input input-bordered" required />
           {errors.massage && <span>Massage field is required</span>}
         </div>
-        <div className="text-center py-5"><button type="submit" className='btn btn-success '>send massage</button></div>
+        <div className="text-center py-5"><button type="submit"className="btn btn-outline btn-warning uppercase">send massage</button></div>
       </form>
     </div>
   );

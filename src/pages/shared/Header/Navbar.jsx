@@ -1,15 +1,18 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../provider/AuthProvider";
+import useEmployee from "../../../Hooks/useEmployee";
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
-
+    const [ , refetch] =useEmployee();
 
     const handleLogOut = () => {
+       
         logOut()
             .then(() => { })
             .catch((error) => console.log(error))
+            refetch();
     }
     const navlink = <>
         <li><Link to='/'>Home</Link></li>
@@ -17,23 +20,9 @@ const Navbar = () => {
         <li><Link to='about'>about</Link></li>
         <li><Link to='contact'>contact</Link></li>
         <li><Link to=' '>testimonial</Link></li>
-        <li><Link to='dashboard/users'>Dashboard</Link></li>
+        <li><Link to='dashboard'>Dashboard</Link></li>
 
-        {
-            user ? <>
-                <button onClick={handleLogOut} className="btn btn-ghost">LogOut</button>
-                <p>{user.displayName}</p>
-                {/* <details className="dropdown">
-                    <summary className="m-1 btn">open or close</summary>
-                    <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-                        <li><a>Item 1</a></li>
-                        <li><a>Item 2</a></li>
-                    </ul>
-                </details> */}
-            </> : <>
-                <li><Link to='login'>Login</Link></li>
-            </>
-        }
+        
     </>
     return (
         <div>
@@ -50,13 +39,25 @@ const Navbar = () => {
                     <Link to='/'><img src="https://i.ibb.co/JK7v5sY/logo.png" alt="" /></Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1 flex items-center uppercase">
+                    <ul className="menu menu-horizontal px-1 flex items-center justify-center uppercase">
                         {navlink}
 
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <button className="btn btn-primary">Button</button>
+                {
+            user ? <>
+                <details className="dropdown dropdown-left dropdown-end">
+                    <summary ><img  className="w-10 h-10 rounded-full" src={user.photoURL} alt="" /> </summary>
+                    <ul className=" shadow menu dropdown-content z-[1] bg-base-100 rounded-box  ">
+                        <li><button onClick={handleLogOut} className="btn btn-outline btn-warning uppercase">LogOut</button></li>
+                        
+                    </ul>
+                </details>
+            </> : <>
+            <Link to='login'><button className="btn btn-outline btn-warning uppercase">Login</button></Link> 
+            </>
+        }
                 </div>
             </div>
         </div>

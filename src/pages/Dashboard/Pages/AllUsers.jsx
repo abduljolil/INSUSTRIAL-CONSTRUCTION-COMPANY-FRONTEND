@@ -88,7 +88,7 @@ const  AllUsers = () => {
                                     {item.designation}
                                 </td>
                                 <td>
-                                    { item.category === 'HR' ? 'HR' : <button
+                                    { item.role === 'HR' ? 'HR' : <button
                                         onClick={() => handleMakeHR(item)}
                                         className="btn btn-lg bg-orange-500">
                                         <FaUsers className="text-white 
