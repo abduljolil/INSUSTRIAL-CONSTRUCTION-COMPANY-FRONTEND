@@ -1,4 +1,4 @@
-# Assignment Category: assignment12_category_0004
+ 
 # Admin email:jalil@gmail.com
 # Admin password:A@a123
 # Front-end Live Site Link:https://assingment-12-frontend.web.app
